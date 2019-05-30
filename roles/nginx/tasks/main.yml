@@ -1,0 +1,24 @@
+---
+# tasks file for nginx
+#
+- name: Package installation 
+  yum:
+    name: "epel-release"
+    state: "installed"
+
+- name: nginx installation
+  yum:
+    name: "nginx"
+    state: "installed"
+
+- name: running starting
+  block:
+    - name: service nginx start
+      service:
+        name: "nginx"
+        state: "restarted"
+  rescue:
+    - name: running a shell
+      shell: |
+        setenforce 0
+      notify: "restart"
